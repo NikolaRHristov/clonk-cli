@@ -121,7 +121,7 @@ async fn redeem(name:String, input:Option<String>) -> Result<(), Box<dyn std::er
 	jar.set_cookies(
 		&mut std::iter::once(
 			&HeaderValue::from_str(
-				&(serde_json::from_str(&fs::read_to_string(auth_path)?)? as AuthData).cookies,
+				&(serde_json::from_str::<AuthData>(&fs::read_to_string(auth_path)?)?).cookies,
 			)
 			.unwrap(),
 		),
