@@ -3,9 +3,9 @@ use std::{fs, io, io::Write, path::PathBuf, sync::Arc};
 use clap::{Parser, Subcommand};
 use directories::BaseDirs;
 use reqwest::{
+	Client,
 	cookie::{CookieStore, Jar},
 	header::HeaderValue,
-	Client,
 };
 use serde::{Deserialize, Serialize};
 use tokio;
