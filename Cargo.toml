@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 clap = { version = "4.5.23", features = ["derive"] }
 directories = { version = "5.0.1" }
-reqwest = { version = "0.12.10", features = ["json", "cookies", "multipart"] }
-serde = { version = "1.0.216", features = ["derive"] }
+reqwest = { version = "0.12.12", features = ["json", "cookies", "multipart"] }
+serde = { version = "1.0.217", features = ["derive"] }
 serde_json = { version = "1.0.134" }
 tokio = { version = "1.42.0", features = ["full"] }
