@@ -14,12 +14,13 @@ clone the repository and run `cargo install --path .` to install the CLI.
 clonk auth login
 ```
 
-This will prompt you for your username and password, and then save the authentication cookies to a file in your home directory.
+This will prompt you for your username and password, and then save the
+authentication cookies to a file in your home directory.
 
 ### Redeem
 
 ```bash
-clonk redeem <api_name> [--input "input"]
+clonk redeem "input"] < api_name > [--input
 ```
 
 This will redeem the specified API with the given input (if required).
