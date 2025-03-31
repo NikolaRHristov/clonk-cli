@@ -14,19 +14,19 @@ use tokio;
 #[command(author, version, about, long_about = None)]
 struct Cli {
 	#[command(subcommand)]
-	command:Commands,
+	command: Commands,
 }
 
 #[derive(Subcommand)]
 enum Commands {
 	Auth {
 		#[command(subcommand)]
-		action:AuthCommands,
+		action: AuthCommands,
 	},
 	Redeem {
-		name:String,
+		name: String,
 		#[arg(long)]
-		input:Option<String>,
+		input: Option<String>,
 	},
 }
 
@@ -37,16 +37,16 @@ enum AuthCommands {
 
 #[derive(Serialize, Deserialize)]
 struct AuthData {
-	username:String,
-	password:String,
-	cookies:String,
+	username: String,
+	password: String,
+	cookies: String,
 }
 
 #[derive(Serialize)]
 struct LoginRequest {
-	username:String,
-	password:String,
-	target_url:String,
+	username: String,
+	password: String,
+	target_url: String,
 }
 
 async fn login() -> Result<(), Box<dyn std::error::Error>> {
@@ -78,9 +78,9 @@ async fn login() -> Result<(), Box<dyn std::error::Error>> {
 		client
 			.post("https://auth.colonq.computer/api/firstfactor")
 			.json(&LoginRequest {
-				username:username.clone(),
-				password:password.clone(),
-				target_url:"https://secure.colonq.computer/menu".to_string(),
+				username: username.clone(),
+				password: password.clone(),
+				target_url: "https://secure.colonq.computer/menu".to_string(),
 			})
 			.send()
 			.await?
@@ -99,11 +99,7 @@ async fn login() -> Result<(), Box<dyn std::error::Error>> {
 
 	fs::write(
 		&auth_path,
-		serde_json::to_string(&AuthData {
-			username,
-			password,
-			cookies:cookies.to_str().unwrap().to_string(),
-		})?,
+		serde_json::to_string(&AuthData { username, password, cookies: cookies.to_str().unwrap().to_string() })?,
 	)?;
 
 	println!("Successfully logged in.");
@@ -111,7 +107,7 @@ async fn login() -> Result<(), Box<dyn std::error::Error>> {
 	Ok(())
 }
 
-async fn redeem(name:String, input:Option<String>) -> Result<(), Box<dyn std::error::Error>> {
+async fn redeem(name: String, input: Option<String>) -> Result<(), Box<dyn std::error::Error>> {
 	let mut auth_path = PathBuf::from(BaseDirs::new().unwrap().home_dir());
 
 	auth_path.push(".clonk/auth");
@@ -120,10 +116,8 @@ async fn redeem(name:String, input:Option<String>) -> Result<(), Box<dyn std::er
 
 	jar.set_cookies(
 		&mut std::iter::once(
-			&HeaderValue::from_str(
-				&(serde_json::from_str::<AuthData>(&fs::read_to_string(auth_path)?)?).cookies,
-			)
-			.unwrap(),
+			&HeaderValue::from_str(&(serde_json::from_str::<AuthData>(&fs::read_to_string(auth_path)?)?).cookies)
+				.unwrap(),
 		),
 		&"https://secure.colonq.computer".parse().unwrap(),
 	);
@@ -152,10 +146,8 @@ async fn redeem(name:String, input:Option<String>) -> Result<(), Box<dyn std::er
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
 	match Cli::parse().command {
-		Commands::Auth { action } => {
-			match action {
-				AuthCommands::Login => login().await?,
-			}
+		Commands::Auth { action } => match action {
+			AuthCommands::Login => login().await?,
 		},
 		Commands::Redeem { name, input } => redeem(name, input).await?,
 	}
