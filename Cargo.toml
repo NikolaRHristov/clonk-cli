@@ -9,4 +9,4 @@ tokio = { version = "1.44.1", features = ["full"] }
 [package]
 edition = "2024"
 name = "clonk"
-version = "0.1.0"
+version = "0.0.1"
